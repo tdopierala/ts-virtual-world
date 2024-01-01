@@ -10,6 +10,16 @@ export default class Graph {
 		this.segments = segments;
 	}
 
+	static load(info: Graph): Graph {
+		const points: Point[] = info.points.map(i => new Point(i.x, i.y));
+		const segments: Segment[] = info.segments.map(i => new Segment(
+			points.find(p => p.equals(i.p1)) as Point,
+			points.find(p => p.equals(i.p2)) as Point
+		));
+
+		return new Graph(points, segments);
+	}
+
 	draw(ctx: CanvasRenderingContext2D): void {
 		for (const segment of this.segments) {
 			segment.draw(ctx);

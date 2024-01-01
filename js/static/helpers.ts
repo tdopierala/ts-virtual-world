@@ -1,5 +1,5 @@
+export const LEFT_CLICK: number = 0;
+export const MIDDLE_CLICK: number = 1;
 export const RIGHT_CLICK: number = 2;
 
-export const LEFT_CLICK: number = 0;
-
-export default { RIGHT_CLICK, LEFT_CLICK };
+export default { LEFT_CLICK, RIGHT_CLICK, MIDDLE_CLICK };
