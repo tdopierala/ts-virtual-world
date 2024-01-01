@@ -1,10 +1,15 @@
-class Segment {
-	constructor(p1, p2) {
+import Point from './point';
+
+export default class Segment {
+	p1: Point;
+	p2: Point;
+
+	constructor(p1: Point, p2: Point) {
 		this.p1 = p1;
 		this.p2 = p2;
 	}
 
-	draw(ctx, width = 2, color = 'black') {
+	draw(ctx: CanvasRenderingContext2D, width: number = 2, color: string = 'black'): void {
 		ctx.beginPath();
 		ctx.lineWidth = width;
 		ctx.strokeStyle = color;
@@ -13,11 +18,11 @@ class Segment {
 		ctx.stroke();
 	}
 
-	equals(segment) {
+	equals(segment: Segment): boolean {
 		return this.includes(segment.p1) && this.includes(segment.p2);
 	}
 
-	includes(point) {
+	includes(point: Point): boolean {
 		return this.p1.equals(point) || this.p2.equals(point);
 	}
 }
