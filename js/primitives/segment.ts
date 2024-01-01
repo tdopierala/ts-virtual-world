@@ -1,3 +1,4 @@
+import ISegmentStyle from '../interfaces/ISegmentStyle';
 import Point from './point';
 
 export default class Segment {
@@ -9,13 +10,15 @@ export default class Segment {
 		this.p2 = p2;
 	}
 
-	draw(ctx: CanvasRenderingContext2D, width: number = 2, color: string = 'black'): void {
+	draw(ctx: CanvasRenderingContext2D, { width = 2, color = 'black', dash = [] }: ISegmentStyle = {}): void {
 		ctx.beginPath();
 		ctx.lineWidth = width;
 		ctx.strokeStyle = color;
+		ctx.setLineDash(dash);
 		ctx.moveTo(this.p1.x, this.p1.y);
 		ctx.lineTo(this.p2.x, this.p2.y);
 		ctx.stroke();
+		ctx.setLineDash([]);
 	}
 
 	equals(segment: Segment): boolean {

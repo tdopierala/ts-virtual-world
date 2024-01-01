@@ -1,4 +1,5 @@
 import Graph from './math/graph';
+import GraphEditor from './graphEditor';
 import Point from './primitives/point';
 import Segment from './primitives/segment';
 
@@ -6,6 +7,7 @@ class App {
 	private canvas: HTMLCanvasElement;
 	private context: CanvasRenderingContext2D;
 	private graph: Graph;
+	private graphEditor: GraphEditor;
 
 	constructor() {
 		this.canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
@@ -23,67 +25,15 @@ class App {
 		const s2: Segment = new Segment(p1, p3);
 
 		this.graph = new Graph([p1, p2, p3, p4], [s1, s2]);
-		this.graph.draw(this.context);
 
-		this.setEventHandlers();
+		this.graphEditor = new GraphEditor(this.canvas, this.context, this.graph);
+		this.animate();
 	}
 
-	refreshCanvas(): void {
+	animate(): void {
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		this.graph.draw(this.context);
-	}
-
-	setEventHandlers(): void {
-		document.getElementById('addRandomPoint')?.addEventListener('click', () => this.addRandomPoint());
-		document.getElementById('addRandomSegment')?.addEventListener('click', () => this.addRandomSegment());
-		document.getElementById('removeRandomSegment')?.addEventListener('click', () => this.removeRandomSegment());
-		document.getElementById('removeRandomPoint')?.addEventListener('click', () => this.removeRandomPoint());
-		document.getElementById('removeAll')?.addEventListener('click', () => this.removeAll());
-	}
-
-	addRandomPoint(): void {
-		const success: boolean = this.graph.tryAddPoint(new Point(Math.random() * this.canvas.width, Math.random() * this.canvas.height));
-
-		this.refreshCanvas();
-		console.log('adding new point: ', success);
-	}
-
-	addRandomSegment(): void {
-		const index1: number = Math.floor(Math.random() * this.graph.points.length);
-		const index2: number = Math.floor(Math.random() * this.graph.points.length);
-		const success: boolean = this.graph.tryAddSegment(new Segment(this.graph.points[index1], this.graph.points[index2]));
-		
-		this.refreshCanvas();
-		console.log('adding new segment: ', success);
-	}
-
-	removeRandomSegment(): void {
-		if (this.graph.segments.length == 0) {
-			console.log("no segments");
-			return;
-		}
-		
-		const index: number = Math.floor(Math.random() * this.graph.segments.length);
-		
-		this.graph.removeSegment(this.graph.segments[index]);
-		this.refreshCanvas();
-	}
-
-	removeRandomPoint(): void {
-		if (this.graph.points.length == 0) {
-			console.log("no point");
-			return;
-		}
-
-		const index: number = Math.floor(Math.random() * this.graph.points.length);
-
-		this.graph.removePoint(this.graph.points[index]);
-		this.refreshCanvas();
-	}
-
-	removeAll(): void {
-		this.graph.dispose();
-		this.refreshCanvas();
+		this.graphEditor.display();
+		requestAnimationFrame(this.animate.bind(this));
 	}
 }
 

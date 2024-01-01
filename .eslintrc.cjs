@@ -53,7 +53,8 @@ module.exports = {
 		// 'prettier/prettier': ['error', {}, { usePrettierrc: true }],
 
 		'spaced-comment': ['error', 'always'],
-		'semi': ['error', 'always'],
+		'semi': 'off', // ['error', 'always'],
+		'@typescript-eslint/semi': 'error',
 		'semi-spacing': 'error',
 		'no-extra-semi': 'error',
 		'no-unexpected-multiline': 'error',
