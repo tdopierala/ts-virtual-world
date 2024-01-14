@@ -1,8 +1,11 @@
 import Graph from './math/graph';
 import GraphEditor from './graphEditor';
 import Viewport from './viewport';
+import World from './world';
 // import Point from './primitives/point';
 // import Segment from './primitives/segment';
+// import Polygon from './primitives/polygon';
+// import Envelope from './primitives/envelope';
 
 class App {
 	private canvas: HTMLCanvasElement;
@@ -10,6 +13,7 @@ class App {
 	private graph: Graph;
 	private graphEditor: GraphEditor;
 	private viewport: Viewport;
+	private world: World;
 
 	constructor() {
 		this.canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
@@ -31,6 +35,8 @@ class App {
 		this.graph = graphInfo ? Graph.load(graphInfo) : new Graph();
 		// this.graph = new Graph([p1, p2, p3, p4], [s1, s2]);
 
+		this.world = new World(this.graph);
+
 		this.viewport = new Viewport(this.canvas, this.context);
 		this.graphEditor = new GraphEditor(this.viewport, this.context, this.graph);
 		this.animate();
@@ -44,7 +50,11 @@ class App {
 
 	animate(): void {
 		this.viewport.reset();
+		this.world.generate();
+		this.world.draw(this.context);
 		this.graphEditor.display();
+		// new Polygon(this.graph.points).draw(this.context);
+		// new Envelope(this.graph.segments[0], 80).draw(this.context);
 		requestAnimationFrame(this.animate.bind(this));
 	}
 
